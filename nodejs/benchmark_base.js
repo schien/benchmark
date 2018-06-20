@@ -1,18 +1,28 @@
 const { performance, PerformanceObserver } = require('perf_hooks');
 const path = require('path');
 
+const DatasetEnum = Object.freeze({
+  S: Symbol('S'),
+  M: Symbol('M'),
+  L: Symbol('L'),
+  convert: function _convert(str) {
+    switch (str) {
+      case 'small': return DatasetEnum.S;
+      case 'mid': return DatasetEnum.M;
+      case 'large': return DatasetEnum.L;
+      default: return undefined;
+    }
+  },
+});
+
+const kSelectedDataset =
+  DatasetEnum.convert(process.env.DATASIZE) || DatasetEnum.L;
+
 const obs = new PerformanceObserver((items)=>{
   const entry = items.getEntries()[0];
   console.log(`${entry.name} : ${entry.duration}`);
 });
 obs.observe({ entryTypes: ['measure']});
-
-const kInitValue = [];
-const kDataLength = 1000000;
-
-for (let i = 0; i < kDataLength; ++i) {
-  kInitValue.push(i);
-}
 
 function createMark(filename) {
   const operation = path.parse(filename).name;
@@ -29,25 +39,8 @@ function createMark(filename) {
   }
 }
 
-function verdict(target) {
-  if (target === kInitValue) {
-    console.error('not a copy');
-  }
-  if (target.length != kDataLength) {
-    console.error('length not the same');
-    return;
-  }
-  for (let i = 0 ; i < kDataLength; ++i) {
-    if (target[i] !== kInitValue[i]) {
-      console.error(`data not the same at ${i}`);
-      return;
-    }
-  }
-}
-
 module.exports = {
-  kInitValue: kInitValue,
-  kDataLength: kDataLength,
   createMark: createMark,
-  verdict: verdict,
+  kSelectedDataset: kSelectedDataset,
+  DatasetEnum: DatasetEnum,
 };

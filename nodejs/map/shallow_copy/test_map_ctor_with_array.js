@@ -1,4 +1,4 @@
-const { kDataSource, createMark, verdict } = require('./benchmark_setup');
+const { kDataSource, createMark, verdict } = require('../benchmark_setup');
 
 let { begin, end } = createMark(__filename);
 

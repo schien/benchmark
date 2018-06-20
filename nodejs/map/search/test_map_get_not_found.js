@@ -1,4 +1,4 @@
-const { kInitValue, kDataLength, kNotFoundKey, createMark } = require('./benchmark_setup');
+const { kInitValue, kDataLength, kNotFoundKey, createMark } = require('../benchmark_setup');
 
 let { begin, end } = createMark(__filename);
 

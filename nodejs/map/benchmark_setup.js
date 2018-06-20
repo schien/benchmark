@@ -1,13 +1,14 @@
-const { performance, PerformanceObserver } = require('perf_hooks');
-const path = require('path');
+const { createMark, DatasetEnum, kSelectedDataset } = require('../benchmark_base');
 
-const [kDataLength, kDataSource, kNotFoundKey] = require('../random_map_source_large.json');
+const datafile = (()=>{
+  switch (kSelectedDataset) {
+    case DatasetEnum.S: return './random_map_source_small.json';
+    case DatasetEnum.M: return './random_map_source_mid.json';
+    case DatasetEnum.L: return './random_map_source_large.json';
+  }
+})();
 
-const obs = new PerformanceObserver((items)=>{
-  const entry = items.getEntries()[0];
-  console.log(`${entry.name} : ${entry.duration}`);
-});
-obs.observe({ entryTypes: ['measure']});
+const [kDataLength, kDataSource, kNotFoundKey] = require(datafile);
 
 const kInitValue = new Map(kDataSource);
 const kInitObjValue = {};
@@ -15,21 +16,6 @@ const kInitObjValue = {};
 for (let i = 0; i < kDataLength; ++i) {
   const entry = kDataSource[i];
   kInitObjValue[entry[0]] = entry[1];
-}
-
-function createMark(filename) {
-  const operation = path.parse(filename).name;
-  const beginMark = `${operation} : begin`;
-  const endMark = `${operation} : end`;
-  return {
-    begin: function() {
-      performance.mark(beginMark);
-    },
-    end: function() {
-      performance.mark(endMark);
-      performance.measure(operation, beginMark, endMark);
-    },
-  }
 }
 
 function verdictMap(target) {

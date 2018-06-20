@@ -1,4 +1,4 @@
-const { kInitObjValue, createMark, verdict } = require('./benchmark_setup');
+const { kInitObjValue, createMark, verdict } = require('../benchmark_setup');
 
 let { begin, end } = createMark(__filename);
 
