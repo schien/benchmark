@@ -52,6 +52,6 @@ export DATASIZE
 
 for i in $(seq $REPEAT); do
   echo "=== test run $DATASIZE #$i ==="
-  bash "$SCRIPT_NAME"
+  bash "$SCRIPT_NAME" | sort --key 3 --numeric-sor | sed 's/\(.*\):\(.*\)/| \1|\2 |/g'
   printf '\n'
 done
