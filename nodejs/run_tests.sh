@@ -50,8 +50,8 @@ cd "$DIR"
 
 export DATASIZE
 
+printf "#TEST=%s DATA=%s REPEAT=%s\n" "$DIR" "${DATASIZE}" "$REPEAT"
 for i in $(seq $REPEAT); do
-  echo "=== test run $DATASIZE #$i ==="
-  bash "$SCRIPT_NAME" | sort --key 3 --numeric-sor | sed 's/\(.*\):\(.*\)/| \1|\2 |/g'
+  bash "$SCRIPT_NAME" | sort -n -k 2 -t ':' | sed 's/\(.*\):\(.*\)/| \1 | \2 |/g'
   printf '\n'
 done

@@ -20,7 +20,7 @@ const kSelectedDataset =
 
 const obs = new PerformanceObserver((items)=>{
   const entry = items.getEntries()[0];
-  console.log(`${entry.name} : ${entry.duration}`);
+  console.log(`${entry.name}:${entry.duration}`);
 });
 obs.observe({ entryTypes: ['measure']});
 
